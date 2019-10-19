@@ -38,6 +38,13 @@
             <name>PIN</name>
         </field>
     </command>
+    <command code="0x04" source="client">
+        <name>Get Log Record</name>
+        <description>Request a log record. Log number is between 1 – [Number of Log Records Supported attribute]. If log number 0 is requested then the most recent log entry is returned.</description>
+        <field type="UNSIGNED_16_BIT_INTEGER">
+            <name>Log Index</name>
+        </field>
+    </command>
 
     <command code="0x00" source="server">
         <name>Lock Door Response</name>
@@ -69,6 +76,54 @@
 		<description>The status byte only indicates if the message has received successfully. To determine status, the client SHOULD query to [Lock State attribute] and [Door State attribute].</description>
         <field type="UNSIGNED_8_BIT_INTEGER">
             <name>Status</name>
+        </field>
+    </command>
+    <command code="0x04" source="server">
+        <name>Get Log Record Response</name>
+        <description>Returns the specified log record. If an invalid log entry ID was requested, it is set to 0 and the most recent log entry will be returned.</description>
+        <field type="UNSIGNED_16_BIT_INTEGER">
+            <name>Log Entry ID</name>
+        </field>
+        <field type="UNSIGNED_32_BIT_INTEGER">
+            <name>Timestamp</name>
+        </field>
+        <field type="ENUMERATION_8_BIT">
+            <name>Event Type</name>
+        </field>
+        <field type="UNSIGNED_8_BIT_INTEGER">
+            <name>Source</name>
+        </field>
+        <field type="UNSIGNED_8_BIT_INTEGER">
+            <name>Event ID or Alarm Code</name>
+        </field>
+        <field type="UNSIGNED_16_BIT_INTEGER">
+            <name>User ID</name>
+        </field>
+        <field type="CHARACTER_STRING">
+            <name>PIN</name>
+        </field>
+    </command>
+    <command code="0x20" source="server">
+        <name>Operating Event Notification</name>
+        <description>The door lock server sends out operation event notification when the event is triggered by the various event sources. The specific operation event will only be sent out if the associated bitmask is enabled in the various attributes in the Event Masks Attribute Set.</description>
+        <description>All events are optional.</description>
+        <field type="UNSIGNED_8_BIT_INTEGER">
+            <name>Operation Event Source</name>
+        </field>
+        <field type="UNSIGNED_8_BIT_INTEGER">
+            <name>Operation Event Code</name>
+        </field>
+        <field type="UNSIGNED_16_BIT_INTEGER">
+            <name>User ID</name>
+        </field>
+        <field type="UNSIGNED_8_BIT_INTEGER">
+            <name>PIN</name>
+        </field>
+        <field type="UNSIGNED_32_BIT_INTEGER">
+            <name>ZigBeeLocalDateTime</name>
+        </field>
+        <field type="CHARACTER_STRING">
+            <name>Data</name>
         </field>
     </command>
 

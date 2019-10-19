@@ -14,8 +14,11 @@ import org.mockito.Mockito;
 
 import com.zsmartsystems.zigbee.ZigBeeEndpoint;
 import com.zsmartsystems.zigbee.zcl.ZclFrameType;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.GetLogRecord;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.GetLogRecordResponse;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.LockDoorCommand;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.LockDoorResponse;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.OperatingEventNotification;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.Toggle;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.ToggleResponse;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.UnlockDoorCommand;
@@ -37,11 +40,15 @@ public class ZclDoorLockClusterTest {
         assertTrue(cluster.getCommandFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 1) instanceof UnlockDoorCommand);
         assertTrue(cluster.getCommandFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 2) instanceof Toggle);
         assertTrue(cluster.getCommandFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 3) instanceof UnlockWithTimeout);
+        assertTrue(cluster.getCommandFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 4) instanceof GetLogRecord);
 
         assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 0) instanceof LockDoorResponse);
         assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 1) instanceof UnlockDoorResponse);
         assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 2) instanceof ToggleResponse);
         assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND,
                 3) instanceof UnlockWithTimeoutResponse);
+        assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND, 4) instanceof GetLogRecordResponse);
+        assertTrue(cluster.getResponseFromId(ZclFrameType.CLUSTER_SPECIFIC_COMMAND,
+                0x20) instanceof OperatingEventNotification);
     }
 }

@@ -18,8 +18,11 @@ import com.zsmartsystems.zigbee.ZigBeeEndpoint;
 import com.zsmartsystems.zigbee.zcl.ZclAttribute;
 import com.zsmartsystems.zigbee.zcl.ZclCluster;
 import com.zsmartsystems.zigbee.zcl.ZclCommand;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.GetLogRecord;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.GetLogRecordResponse;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.LockDoorCommand;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.LockDoorResponse;
+import com.zsmartsystems.zigbee.zcl.clusters.doorlock.OperatingEventNotification;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.Toggle;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.ToggleResponse;
 import com.zsmartsystems.zigbee.zcl.clusters.doorlock.UnlockDoorCommand;
@@ -55,7 +58,7 @@ import com.zsmartsystems.zigbee.zcl.protocol.ZclDataType;
  * <p>
  * Code is auto-generated. Modifications may be overwritten!
  */
-@Generated(value = "com.zsmartsystems.zigbee.autocode.ZigBeeCodeGenerator", date = "2019-10-04T18:21:10Z")
+@Generated(value = "com.zsmartsystems.zigbee.autocode.ZigBeeCodeGenerator", date = "2019-10-19T15:02:05Z")
 public class ZclDoorLockCluster extends ZclCluster {
     /**
      * The ZigBee Cluster Library Cluster ID
@@ -377,6 +380,8 @@ public class ZclDoorLockCluster extends ZclCluster {
         commandMap.put(0x0001, UnlockDoorResponse.class);
         commandMap.put(0x0002, ToggleResponse.class);
         commandMap.put(0x0003, UnlockWithTimeoutResponse.class);
+        commandMap.put(0x0004, GetLogRecordResponse.class);
+        commandMap.put(0x0020, OperatingEventNotification.class);
 
         return commandMap;
     }
@@ -389,6 +394,7 @@ public class ZclDoorLockCluster extends ZclCluster {
         commandMap.put(0x0001, UnlockDoorCommand.class);
         commandMap.put(0x0002, Toggle.class);
         commandMap.put(0x0003, UnlockWithTimeout.class);
+        commandMap.put(0x0004, GetLogRecord.class);
 
         return commandMap;
     }
@@ -3480,6 +3486,24 @@ public class ZclDoorLockCluster extends ZclCluster {
     }
 
     /**
+     * The Get Log Record
+     * <p>
+     * Request a log record. Log number is between 1 – [Number of Log Records Supported
+     * attribute]. If log number 0 is requested then the most recent log entry is returned.
+     *
+     * @param logIndex {@link Integer} Log Index
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> getLogRecord(Integer logIndex) {
+        GetLogRecord command = new GetLogRecord();
+
+        // Set the fields
+        command.setLogIndex(logIndex);
+
+        return send(command);
+    }
+
+    /**
      * The Lock Door Response
      * <p>
      * This command is sent in response to a Lock command with one status byte payload. The
@@ -3562,6 +3586,68 @@ public class ZclDoorLockCluster extends ZclCluster {
 
         // Set the fields
         command.setStatus(status);
+
+        return send(command);
+    }
+
+    /**
+     * The Get Log Record Response
+     * <p>
+     * Returns the specified log record. If an invalid log entry ID was requested, it is set to 0
+     * and the most recent log entry will be returned.
+     *
+     * @param logEntryId {@link Integer} Log Entry ID
+     * @param timestamp {@link Integer} Timestamp
+     * @param eventType {@link Integer} Event Type
+     * @param source {@link Integer} Source
+     * @param eventIdOrAlarmCode {@link Integer} Event ID or Alarm Code
+     * @param userId {@link Integer} User ID
+     * @param pin {@link String} PIN
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> getLogRecordResponse(Integer logEntryId, Integer timestamp, Integer eventType, Integer source, Integer eventIdOrAlarmCode, Integer userId, String pin) {
+        GetLogRecordResponse command = new GetLogRecordResponse();
+
+        // Set the fields
+        command.setLogEntryId(logEntryId);
+        command.setTimestamp(timestamp);
+        command.setEventType(eventType);
+        command.setSource(source);
+        command.setEventIdOrAlarmCode(eventIdOrAlarmCode);
+        command.setUserId(userId);
+        command.setPin(pin);
+
+        return send(command);
+    }
+
+    /**
+     * The Operating Event Notification
+     * <p>
+     * The door lock server sends out operation event notification when the event is triggered
+     * by the various event sources. The specific operation event will only be sent out if the
+     * associated bitmask is enabled in the various attributes in the Event Masks Attribute
+     * Set.
+     * <p>
+     * All events are optional.
+     *
+     * @param operationEventSource {@link Integer} Operation Event Source
+     * @param operationEventCode {@link Integer} Operation Event Code
+     * @param userId {@link Integer} User ID
+     * @param pin {@link Integer} PIN
+     * @param zigbeelocaldatetime {@link Integer} ZigBeeLocalDateTime
+     * @param data {@link String} Data
+     * @return the {@link Future<CommandResult>} command result future
+     */
+    public Future<CommandResult> operatingEventNotification(Integer operationEventSource, Integer operationEventCode, Integer userId, Integer pin, Integer zigbeelocaldatetime, String data) {
+        OperatingEventNotification command = new OperatingEventNotification();
+
+        // Set the fields
+        command.setOperationEventSource(operationEventSource);
+        command.setOperationEventCode(operationEventCode);
+        command.setUserId(userId);
+        command.setPin(pin);
+        command.setZigbeelocaldatetime(zigbeelocaldatetime);
+        command.setData(data);
 
         return send(command);
     }
